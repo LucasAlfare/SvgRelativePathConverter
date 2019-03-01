@@ -10,30 +10,35 @@ public class Conversor {
         ArrayList<OperacaoSVG> o = pathParaOperacao(relativo);
 
         StringBuilder sb = new StringBuilder();
-        float xInicialAtual = 0, yInicialAtual = 0;
+        float xAtual = 0, yAtual = 0;
         for (OperacaoSVG operacao : o) {
             if (operacao.comando.equals("m")) {
-                xInicialAtual = operacao.valores.get(0);
-                yInicialAtual = operacao.valores.get(1);
+                xAtual = operacao.valores.get(0);
+                yAtual = operacao.valores.get(1);
 
                 sb.append("m ")
-                        .append(xInicialAtual + posX)
+                        .append(xAtual + posX)
                         .append(" ")
-                        .append(yInicialAtual + posY)
+                        .append(yAtual + posY)
                         .append(" ");
             } else {
                 sb.append(operacao.comando).append(" ");
                 for (int i = 0; i < operacao.valores.size(); i++) {
                     if (i % 2 == 0) {
-                        sb.append(operacao.valores.get(i) + xInicialAtual).append(" ");
+                        sb.append(operacao.valores.get(i) + xAtual).append(" ");
                     } else {
-                        sb.append(operacao.valores.get(i) + yInicialAtual).append(" ");
+                        sb.append(operacao.valores.get(i) + yAtual).append(" ");
                     }
+                }
+
+                if (operacao.valores.size() >= 2) {
+                    xAtual = operacao.valores.get(operacao.valores.size() - 2) + xAtual;
+                    yAtual = operacao.valores.get(operacao.valores.size() - 1) + yAtual;
                 }
             }
         }
 
-        return sb.toString().toUpperCase().replaceAll("Z", "z");
+        return sb.toString().toUpperCase();
     }
 
     public static ArrayList<OperacaoSVG> pathParaOperacao(String fonte) {
@@ -41,12 +46,37 @@ public class Conversor {
         String[] info = formatada(fonte).split("\\|");
         for (String s : info) {
             if (!s.isEmpty()) {
-                String[] nums = s.split(" ");
-                ArrayList<Float> floats = new ArrayList<>();
-                for (int i = 1; i < nums.length; i++) {
-                    floats.add(Float.parseFloat(nums[i]));
+                String[] elementosOperacao = s.split(" ");
+                ArrayList<Float> floats;
+
+                switch (elementosOperacao[0]) {
+                    case "m":
+
+                        floats = new ArrayList<>();
+                        floats.add(Float.parseFloat(elementosOperacao[1]));
+                        floats.add(Float.parseFloat(elementosOperacao[2]));
+                        root.add(new OperacaoSVG("m", floats));
+                        break;
+                    case "c":
+
+                        for (int i = 1; i < elementosOperacao.length; i += 6) {
+                            floats = new ArrayList<>();
+                            floats.add(Float.parseFloat(elementosOperacao[i]));
+                            floats.add(Float.parseFloat(elementosOperacao[i + 1]));
+                            floats.add(Float.parseFloat(elementosOperacao[i + 2]));
+                            floats.add(Float.parseFloat(elementosOperacao[i + 3]));
+                            floats.add(Float.parseFloat(elementosOperacao[i + 4]));
+                            floats.add(Float.parseFloat(elementosOperacao[i + 5]));
+
+                            root.add(new OperacaoSVG("c", floats));
+                        }
+                        break;
+                    case "z":
+
+                        floats = new ArrayList<>();
+                        root.add(new OperacaoSVG("z", floats));
+                        break;
                 }
-                root.add(new OperacaoSVG(nums[0], floats));
             }
         }
 
