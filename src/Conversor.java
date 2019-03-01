@@ -115,7 +115,7 @@ public class Conversor {
         return sb.toString().toUpperCase();
     }
 
-    public static ArrayList<OperacaoSVG> pathParaOperacao(String fonte) {
+    public ArrayList<OperacaoSVG> pathParaOperacao(String fonte) {
         ArrayList<OperacaoSVG> operacoes = new ArrayList<>();
         String[] info = formatada(fonte).split("\\|");
         for (String s : info) {
@@ -171,7 +171,7 @@ public class Conversor {
         return s.reverse().toString().replaceAll("\\s{2,}", " ").trim();
     }
 
-    private static class OperacaoSVG {
+    public class OperacaoSVG {
 
         String comando;
         ArrayList<Float> valores;
