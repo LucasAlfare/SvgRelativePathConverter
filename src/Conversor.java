@@ -11,9 +11,10 @@ public class Conversor {
      * Esse campo so vai ter algum conteudo depois do
      * metodo {@code relativoParaAbsoluto} ser invocado.
      */
-    public static final ArrayList<OperacaoSVG> operacoesAbsolutas = new ArrayList<>();
+    public final ArrayList<OperacaoSVG> operacoesAbsolutas = new ArrayList<>();
+    public String pathRelativo;
 
-    public static String relativoParaAbsoluto(String relativo) {
+    public String relativoParaAbsoluto(String relativo) {
         return relativoParaAbsoluto(relativo, 0, 0);
     }
 
@@ -30,7 +31,7 @@ public class Conversor {
      * eixo X sera somado ao mesmo ponto anterior do eixo X, o que tambem
      * vale para o eixo Y.
      * <p>
-     * Alem disso e importante saber que, caso haja mais de um comando
+     * Alem disso e importante frizar que, caso haja mais de um comando
      * {@code m} o proximo comando {@code m} nao sera a somado ao ponto
      * anterior, que no caso poderia ser o ponto final de uma linha ou
      * curva, mas sim sera somado aos pontos do comando {@code m} anterior,
@@ -51,9 +52,10 @@ public class Conversor {
      * @return uma String com os valores relativos convertidos para absolutos
      */
     //TODO: arrumar posicionamento [x,y]. No momento usar apenas x=0 e y=0
-    public static String relativoParaAbsoluto(String relativo, int x, int y) {
+    public String relativoParaAbsoluto(String relativo, int x, int y) {
+        pathRelativo = relativo;
         operacoesAbsolutas.clear();
-        ArrayList<OperacaoSVG> o = pathParaOperacao(relativo);
+        ArrayList<OperacaoSVG> o = pathParaOperacao(pathRelativo);
 
         StringBuilder sb = new StringBuilder();
         float ultimoMX = x, ultimoMY = y;
@@ -65,9 +67,6 @@ public class Conversor {
                 case "m":
                     ultimoMX += operacao.valores.get(0);
                     ultimoMY += operacao.valores.get(1);
-
-//                    operacao.valores.set(0, ultimoMX);
-//                    operacao.valores.set(1, ultimoMY);
 
                     xAtual = ultimoMX;
                     yAtual = ultimoMY;
@@ -88,12 +87,10 @@ public class Conversor {
                         if (i % 2 == 0) {
                             float auxX = operacao.valores.get(i) + xAtual;
                             floats.add(auxX);
-                            //operacao.valores.set(i, auxX);
                             sb.append(auxX).append(" ");
                         } else {
                             float auxY = operacao.valores.get(i) + yAtual;
                             floats.add(auxY);
-                            //operacao.valores.set(i, auxY);
                             sb.append(auxY).append(" ");
                         }
                     }
@@ -111,7 +108,6 @@ public class Conversor {
             }
         }
 
-        //System.out.println("operações absolutas: " + operacoesAbsolutas);
         return sb.toString().toUpperCase();
     }
 
