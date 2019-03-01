@@ -14,6 +14,39 @@ public class Conversor {
         return relativoParaAbsoluto(relativo, 0, 0);
     }
 
+    /**
+     * Converte um path de valores relativos para valores absolutos.
+     * <p>
+     * Um valor absoluto sempre vai ser ele mesmo somado ao seu respectivo
+     * ponto anterior. Por exemplo, se iniciamos um path com {@code x},
+     * o proximo valor absoluto {@code a} sera {@code a+x}.
+     * <p>
+     * Portanto, tomando como exemplo o caminho relativo
+     * "m 1 2 c 1 2 3 4 5 6 z" seu equivalente absoluto sera
+     * "M 1 2 C 2 4 4 6 6 8 Z". Vale lembrar que cada ponto respectivo ao
+     * eixo X sera somado ao mesmo ponto anterior do eixo X, o que tambem
+     * vale para o eixo Y.
+     * <p>
+     * Alem disso e importante saber que, caso haja mais de um comando
+     * {@code m} o proximo comando {@code m} nao sera a somado ao ponto
+     * anterior, que no caso poderia ser o ponto final de uma linha ou
+     * curva, mas sim sera somado aos pontos do comando {@code m} anterior,
+     * o que faz dos pontos do comando {@code m} serem "pontos de inicio"
+     * para os comandos seguintes.
+     * Por exemplo:
+     * <p>
+     * - Relativo: "m 1 2 c 1 2 3 4 5 6 z m 3 4 c 1 2 3 4 5 6 z"
+     * - Absoluto: "M 1 2 c 2 4 4 6 6 8 Z M 4 6 C 5 8 7 10 9 12 Z"
+     * <p>
+     * Assim, basicamente a conversao se da pela iteracao em uma lista de
+     * operacoes pre-adicionadas fazendo com que seja possivel atualizar os
+     * valores de cada ponto.
+     *
+     * @param relativo uma String que contem o path relativo a ser convertido
+     * @param x        obsoleto por enquanto
+     * @param y        obsoleto por enquanto
+     * @return uma String com os valores relativos convertidos para absolutos
+     */
     //TODO: arrumar posicionamento [x,y]. No momento usar apenas x=0 e y=0
     public static String relativoParaAbsoluto(String relativo, int x, int y) {
         operacoesAbsolutas.clear();
@@ -75,7 +108,7 @@ public class Conversor {
             }
         }
 
-        System.out.println("operações absolutas: " + operacoesAbsolutas);
+        //System.out.println("operações absolutas: " + operacoesAbsolutas);
         return sb.toString().toUpperCase();
     }
 
