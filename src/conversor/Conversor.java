@@ -175,8 +175,8 @@ public class Conversor {
 
     public class OperacaoSVG {
 
-        String comando;
-        ArrayList<Float> valores;
+        public String comando;
+        public ArrayList<Float> valores;
 
         OperacaoSVG(String comando, ArrayList<Float> valores) {
             this.comando = comando;
