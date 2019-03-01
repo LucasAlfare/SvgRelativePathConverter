@@ -8,11 +8,15 @@ import java.util.Arrays;
 public class Conversor {
 
     /**
+     * Campo usado para armazenar o caminho passado
+     */
+    public String pathRelativo;
+
+    /**
      * Esse campo so vai ter algum conteudo depois do
      * metodo {@code relativoParaAbsoluto} ser invocado.
      */
     public final ArrayList<OperacaoSVG> operacoesAbsolutas = new ArrayList<>();
-    public String pathRelativo;
 
     public String relativoParaAbsoluto(String relativo) {
         return relativoParaAbsoluto(relativo, 0, 0);
