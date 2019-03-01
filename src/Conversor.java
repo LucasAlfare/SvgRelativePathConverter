@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * @author lucas sousa
+ */
 @SuppressWarnings("WeakerAccess")
 public class Conversor {
 
