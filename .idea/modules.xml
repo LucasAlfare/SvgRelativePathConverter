@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Relative SVG to Absolute Parser.iml" filepath="$PROJECT_DIR$/Relative SVG to Absolute Parser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/svgPathTranslator.iml" filepath="$PROJECT_DIR$/svgPathTranslator.iml" />
     </modules>
   </component>
 </project>
