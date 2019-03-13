@@ -2,6 +2,7 @@ package conversor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author lucas sousa
@@ -25,6 +26,7 @@ public class Conversor {
     }
 
     /**
+     * TODO: remover x e y
      * Converte um path de valores relativos para valores absolutos.
      * <p>
      * Um valor absoluto sempre vai ser ele mesmo somado ao seu respectivo
@@ -85,6 +87,39 @@ public class Conversor {
 
                     operacoesAbsolutas.add(new OperacaoSVG("M", new ArrayList<>(Arrays.asList(ultimoMX, ultimoMY))));
                     break;
+
+                case "h":
+                    ultimoMX += operacao.valores.get(0);
+                    xAtual = ultimoMX;
+                    sb.append("h ")
+                            .append(ultimoMX)
+                            .append(" ");
+
+                    operacoesAbsolutas.add(
+                            new OperacaoSVG(
+                                    "H",
+                                    new ArrayList<>(
+                                            Collections.singletonList(ultimoMX)
+                                    )
+                            ));
+                    break;
+
+                case "v":
+                    ultimoMY += operacao.valores.get(0);
+                    yAtual = ultimoMY;
+                    sb.append("v ")
+                            .append(ultimoMY)
+                            .append(" ");
+
+                    operacoesAbsolutas.add(
+                            new OperacaoSVG(
+                                    "V",
+                                    new ArrayList<>(
+                                            Collections.singletonList(ultimoMY)
+                                    )
+                            ));
+                    break;
+
                 case "c":
                     sb.append(operacao.comando).append(" ");
                     operacao.comando = operacao.comando.toUpperCase();
@@ -106,6 +141,7 @@ public class Conversor {
 
                     operacoesAbsolutas.add(new OperacaoSVG("C", floats));
                     break;
+
                 case "z":
                     operacao.comando = operacao.comando.toUpperCase();
                     sb.append("z ");
@@ -125,13 +161,23 @@ public class Conversor {
                 String[] elementosOperacao = s.split(" ");
                 ArrayList<Float> floats;
 
-                //TODO: adicionar casos para os comandos [l, h, v, q]
+                //TODO: adicionar casos para os comandos [q]
                 switch (elementosOperacao[0]) {
                     case "m":
                         floats = new ArrayList<>();
                         floats.add(Float.parseFloat(elementosOperacao[1]));
                         floats.add(Float.parseFloat(elementosOperacao[2]));
                         operacoes.add(new OperacaoSVG("m", floats));
+                        break;
+                    case "h":
+                        floats = new ArrayList<>();
+                        floats.add(Float.parseFloat(elementosOperacao[1]));
+                        operacoes.add(new OperacaoSVG("h", floats));
+                        break;
+                    case "v":
+                        floats = new ArrayList<>();
+                        floats.add(Float.parseFloat(elementosOperacao[1]));
+                        operacoes.add(new OperacaoSVG("v", floats));
                         break;
                     case "c":
                         for (int i = 1; i < elementosOperacao.length; i += 6) {
