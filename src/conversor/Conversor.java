@@ -6,6 +6,8 @@ import java.util.Collections;
 
 /**
  * @author lucas sousa
+ *
+ * TODO: definir comandos proprios para desenho de elipses, circulos, retangulos etc
  */
 @SuppressWarnings("WeakerAccess")
 public class Conversor {
@@ -20,10 +22,6 @@ public class Conversor {
      * metodo {@code relativoParaAbsoluto} ser invocado.
      */
     public final ArrayList<OperacaoSVG> operacoesAbsolutas = new ArrayList<>();
-
-    public String relativoParaAbsoluto(String relativo) {
-        return relativoParaAbsoluto(relativo, 0, 0);
-    }
 
     /**
      * TODO: remover x e y
@@ -55,22 +53,19 @@ public class Conversor {
      * valores de cada ponto.
      *
      * @param relativo uma String que contem o path relativo a ser convertido
-     * @param x        obsoleto por enquanto
-     * @param y        obsoleto por enquanto
      * @return uma String com os valores relativos convertidos para absolutos
      */
-    //TODO: arrumar posicionamento [x,y]. No momento usar apenas x=0 e y=0
-    public String relativoParaAbsoluto(String relativo, int x, int y) {
+    public String relativoParaAbsoluto(String relativo) {
         pathRelativo = relativo;
         operacoesAbsolutas.clear();
         ArrayList<OperacaoSVG> o = pathParaOperacao(pathRelativo);
 
         StringBuilder sb = new StringBuilder();
-        float ultimoMX = x, ultimoMY = y;
+        float ultimoMX = 0, ultimoMY = 0;
         float xAtual = 0, yAtual = 0;
 
         for (OperacaoSVG operacao : o) {
-            //TODO: adicionar casos para os comandos [l, h, v, q]
+            //TODO: adicionar casos para os comandos [q]
             switch (operacao.comando) {
                 case "m":
                     ultimoMX += operacao.valores.get(0);
